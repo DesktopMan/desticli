@@ -56,7 +56,7 @@ else:
 	   password = getpass.getpass("Enter Password: ")
 
 	session = auth.login(username, password, config.API_KEY)
-	
+
 	if session:
 		with open('cookies.bin', 'wb') as f:
 			pickle.dump(session.cookies, f)

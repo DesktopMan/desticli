@@ -8,28 +8,69 @@ def getItemCategories():
 	ic = collections.OrderedDict()
 
 	ic['all'] = []
-	
+
 	# Ascendant Shard, Ascendant Energy, Radiant Shard, Radiant Energy
 	ic['materials'] = [ 258181985, 1893498008, 769865458, 616706469 ]
-	
+
 	# Spinmetal, Helium Filaments, Relic Iron, Spirit Bloom
 	ic['resources'] = [ 2882093969, 1797491610, 3242866270, 2254123540 ]
-	
+
 	# Primary, Special, Heavy
-	ic['synths'] = [ 2180254632, 928169143, 211861343 ] 
-	
+	ic['synths'] = [ 2180254632, 928169143, 211861343 ]
+
 	# Auto Rifle, Scout Rifle, Hand Cannon, Sniper Rifle, Shutgun, Fusion Rifle, Rocket Launcher, Machine Gun
 	ic['telemetries'] = [ 4159731660, 323927027, 846470091, 927802664, 4141501356, 729893597, 3036931873, 1485751393 ]
-	
+
 	# Fallen, Hive, Vex, Kabal
-	ic['glimmer_boosters'] = [ 3783295803, 1043138475, 1772853454, 3446457162 ] 
-	
+	ic['glimmer_boosters'] = [ 3783295803, 1043138475, 1772853454, 3446457162 ]
+
 	ic['weapon_parts'] = [ 1898539128 ]
 	ic['strange_coins'] = [ 1738186005 ]
-	ic['motes_of_light'] = [ 583698483 ]	
+	ic['motes_of_light'] = [ 583698483 ]
 	ic['exotic_shards'] = [ 452597397 ]
 
 	return ic
+
+def getItemName(itemId):
+	items = {}
+
+	items[258181985] = 'Ascendant Shard'
+	items[1893498008] = 'Ascendant Energy'
+	items[769865458] = 'Radiant Shard'
+	items[616706469] = 'Radiant Energy'
+
+	items[2882093969] = 'Spinmetal'
+	items[1797491610] = 'Helium Filaments'
+	items[3242866270] = 'Relic Iron'
+	items[2254123540] = 'Spirit Bloom'
+
+	items[2180254632] = 'Primary Synth'
+	items[928169143] = 'Special Synth'
+	items[211861343] = 'Heavy Synth'
+
+	items[4159731660] = 'Auto Rifle Telemetry'
+	items[323927027] = 'Scout Rifle Telemetry'
+	items[846470091] = 'Hand Cannon Telemetry'
+	items[927802664] = 'Sniper Rifle Telemetry'
+	items[4141501356] = 'Shotgun Telemetry'
+	items[729893597] = 'Fusion Rifle Telemetry'
+	items[3036931873] = 'Rocket Launcher Telemetry'
+	items[1485751393] = 'Machine Gun Telemetry'
+
+	items[3783295803] = 'Ether Seeds'
+	items[1043138475] = 'Black Wax Idol'
+	items[1772853454] = 'Blue Polyphage'
+	items[3446457162] = 'Resupply Codes'
+
+	items[1898539128] = 'Weapon Part'
+	items[1738186005] = 'Strange Coin'
+	items[583698483] = 'Mote of Light'
+	items[452597397] = 'Exotic Shard'
+
+	if itemId in items:
+		return items[itemId]
+
+	return 'Unknown Item'
 
 def getItemField(inventory, itemId, field, default):
 	for item in inventory:
@@ -93,7 +134,7 @@ def normalizeItem(session, itemId, inventories):
 						need -= spare
 
 def moveItem(session, itemId, source, dest, count):
-	print "Moving %d item(s) from %s to %s..." % (count, source, dest)
+	print "Moving %s * %d..." % (getItemName(itemId), count)
 
 	URL = 'https://www.bungie.net/Platform/Destiny/TransferItem/'
 	body = {}

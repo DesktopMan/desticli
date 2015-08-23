@@ -15,7 +15,7 @@ def getCharacters(session, id):
 	data = json.loads(response.text)['Response']['data']
 
 	characters = []
-	
+
 	for c in data['characters']:
 		characters.append(c['characterBase']['characterId'])
 
