@@ -11,11 +11,12 @@ def getItemCategories():
 	ic['all'] = {}
 	ic['materials'] = {}
 	ic['resources'] = {}
-	ic['weapon_parts'] = {}
-	ic['ammunition'] = {}
+	ic['weapon_parts'] = { 1898539128 }
+	ic['ammunition'] = { 2180254632, 928169143, 211861343 }
 	ic['telemetries'] = {}
-	ic['strange_coins'] = {}
-	ic['motes_of_light'] = {}
+	ic['strange_coins'] = { 1738186005 }
+	ic['motes_of_light'] = { 937555249 }
+	ic['glimmer_boosters'] = {}
 
 	return ic
 
