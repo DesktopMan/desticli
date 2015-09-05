@@ -100,7 +100,7 @@ def normalize(config, session, args):
 			itemIds.extend(ic[cat])
 
 	# Grab inventories, only done once per normalize
-	userId = user.getId(session, config.DISPLAYNAME)
+	userId = user.getId(session, config.DISPLAY_NAME)
 	characters = user.getCharacters(session, userId)
 
 	inventories = {}
