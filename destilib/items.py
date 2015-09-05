@@ -73,9 +73,18 @@ def getItemName(itemId):
 	return 'Unknown Item'
 
 def getItemField(inventory, itemId, field, default):
+	# Special handling of stack size
+	count = 0
+
 	for item in inventory:
 		if item['itemHash'] == itemId:
-			return item[field]
+			if field != 'stackSize':
+				return item[field]
+			else:
+				count += item[field]
+
+	if field == 'stackSize':
+		return count;
 
 	return default
 
