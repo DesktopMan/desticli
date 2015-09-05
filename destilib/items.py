@@ -157,8 +157,15 @@ def moveItem(session, itemId, source, dest, count):
 
 	response = session.post(URL, data=json.dumps(body))
 
-	if response.status_code != 200 or json.loads(response.text)['ErrorStatus'] != 'Success':
-		print response.text
+	if response.status_code != 200:
+		print 'Failed to move item(s) to the vault. Server error.'
+		time.sleep(1)
+		return
+
+	if json.loads(response.text)['ErrorStatus'] != 'Success':
+		print 'Failed to move item(s) to the vault. Vault full?'
+		time.sleep(1)
+		return
 
 	time.sleep(1)
 
@@ -167,8 +174,16 @@ def moveItem(session, itemId, source, dest, count):
 	body['transferToVault'] = False
 
 	response = session.post(URL, data=json.dumps(body))
-	if response.status_code != 200 or json.loads(response.text)['ErrorStatus'] != 'Success':
-		print response.text
+
+	if response.status_code != 200:
+		print 'Failed to move item(s) from the vault. Server error.'
+		time.sleep(1)
+		return
+
+	if json.loads(response.text)['ErrorStatus'] != 'Success':
+		print 'Failed to move item(s) from the vault. Character full?'
+		time.sleep(1)
+		return
 
 	time.sleep(1)
 
