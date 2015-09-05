@@ -12,9 +12,7 @@ from destilib import auth
 from destilib import items
 from destilib import user
 
-logging.basicConfig(level=logging.DEBUG)
-ul3_logger = logging.getLogger("requests.packages.urllib3")
-ul3_logger.setLevel(logging.WARN)
+logging.basicConfig(level=logging.WARN)
 
 # Set up the CLI arguments and parse them
 parser = argparse.ArgumentParser(description='Destiny Command Line Interface')
@@ -25,6 +23,8 @@ parser_normalize.add_argument('filter', choices=items.getItemCategories().keys()
 parser_normalize.set_defaults(func=items.normalize)
 
 args = parser.parse_args()
+
+print 'Authenticating with PSN/Bungie...'
 
 session = None
 
@@ -65,5 +65,9 @@ if not session:
 	print "Failed to authenticate against PSN / Bungie. Wrong credentials?"
 	exit()
 
+print 'Normalizing items...'
+
 # Authentication is complete, time to do some work
 args.func(config, session, args)
+
+print 'Done.'
