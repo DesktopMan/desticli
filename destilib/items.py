@@ -33,44 +33,44 @@ def getItemCategories():
 	return ic
 
 def getItemName(itemId):
-	items = {}
+	items = {
+		258181985  : 'Ascendant Shard',
+		1893498008 : 'Ascendant Energy',
+		769865458  : 'Radiant Shard',
+		616706469  : 'Radiant Energy',
 
-	items[258181985] = 'Ascendant Shard'
-	items[1893498008] = 'Ascendant Energy'
-	items[769865458] = 'Radiant Shard'
-	items[616706469] = 'Radiant Energy'
+		2882093969 : 'Spinmetal',
+		1797491610 : 'Helium Filaments',
+		3242866270 : 'Relic Iron',
+		2254123540 : 'Spirit Bloom',
 
-	items[2882093969] = 'Spinmetal'
-	items[1797491610] = 'Helium Filaments'
-	items[3242866270] = 'Relic Iron'
-	items[2254123540] = 'Spirit Bloom'
+		2180254632 : 'Primary Synth',
+		928169143  : 'Special Synth',
+		211861343  : 'Heavy Synth',
 
-	items[2180254632] = 'Primary Synth'
-	items[928169143] = 'Special Synth'
-	items[211861343] = 'Heavy Synth'
+		4159731660 : 'Auto Rifle Telemetry',
+		323927027  : 'Scout Rifle Telemetry',
+		846470091  : 'Hand Cannon Telemetry',
+		927802664  : 'Sniper Rifle Telemetry',
+		4141501356 : 'Shotgun Telemetry',
+		729893597  : 'Fusion Rifle Telemetry',
+		3036931873 : 'Rocket Launcher Telemetry',
+		1485751393 : 'Machine Gun Telemetry',
+		705234570  : 'Primary Telemetry',
+		3371478409 : 'Special Telemetry',
+		2929837733 : 'Heavy Telemetry',
 
-	items[4159731660] = 'Auto Rifle Telemetry'
-	items[323927027] = 'Scout Rifle Telemetry'
-	items[846470091] = 'Hand Cannon Telemetry'
-	items[927802664] = 'Sniper Rifle Telemetry'
-	items[4141501356] = 'Shotgun Telemetry'
-	items[729893597] = 'Fusion Rifle Telemetry'
-	items[3036931873] = 'Rocket Launcher Telemetry'
-	items[1485751393] = 'Machine Gun Telemetry'
-	items[705234570] = 'Primary Telemetry'
-	items[3371478409] = 'Special Telemetry'
-	items[2929837733] = 'Heavy Telemetry'
+		3783295803 : 'Ether Seeds',
+		1043138475 : 'Black Wax Idol',
+		1772853454 : 'Blue Polyphage',
+		3446457162 : 'Resupply Codes',
 
-	items[3783295803] = 'Ether Seeds'
-	items[1043138475] = 'Black Wax Idol'
-	items[1772853454] = 'Blue Polyphage'
-	items[3446457162] = 'Resupply Codes'
-
-	items[1898539128] = 'Weapon Parts'
-	items[1542293174] = 'Armor Materials'
-	items[1738186005] = 'Strange Coin'
-	items[937555249] = 'Mote of Light'
-	items[452597397] = 'Exotic Shard'
+		1898539128 : 'Weapon Parts',
+		1542293174 : 'Armor Materials',
+		1738186005 : 'Strange Coin',
+		937555249  : 'Mote of Light',
+		452597397  : 'Exotic Shard'
+	}
 
 	if itemId in items:
 		return items[itemId]
