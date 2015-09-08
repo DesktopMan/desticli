@@ -25,6 +25,7 @@ def getItemCategories():
 	ic['glimmer_boosters'] = [ 3783295803, 1043138475, 1772853454, 3446457162 ]
 
 	ic['weapon_parts'] = [ 1898539128 ]
+	ic['armor_materials'] = [ 1542293174 ]
 	ic['strange_coins'] = [ 1738186005 ]
 	ic['motes_of_light'] = [ 937555249 ]
 	ic['exotic_shards'] = [ 452597397 ]
@@ -62,7 +63,8 @@ def getItemName(itemId):
 	items[1772853454] = 'Blue Polyphage'
 	items[3446457162] = 'Resupply Codes'
 
-	items[1898539128] = 'Weapon Part'
+	items[1898539128] = 'Weapon Parts'
+	items[1542293174] = 'Armor Materials'
 	items[1738186005] = 'Strange Coin'
 	items[937555249] = 'Mote of Light'
 	items[452597397] = 'Exotic Shard'
