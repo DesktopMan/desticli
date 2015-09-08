@@ -18,8 +18,8 @@ def getItemCategories():
 	# Primary, Special, Heavy
 	ic['synths'] = [ 2180254632, 928169143, 211861343 ]
 
-	# Auto Rifle, Scout Rifle, Hand Cannon, Sniper Rifle, Shutgun, Fusion Rifle, Rocket Launcher, Machine Gun
-	ic['telemetries'] = [ 4159731660, 323927027, 846470091, 927802664, 4141501356, 729893597, 3036931873, 1485751393 ]
+	# Auto Rifle, Scout Rifle, Hand Cannon, Sniper Rifle, Shutgun, Fusion Rifle, Rocket Launcher, Machine Gun, Primary, Special, Heavy
+	ic['telemetries'] = [ 4159731660, 323927027, 846470091, 927802664, 4141501356, 729893597, 3036931873, 1485751393, 705234570, 3371478409, 2929837733 ]
 
 	# Fallen, Hive, Vex, Kabal
 	ic['glimmer_boosters'] = [ 3783295803, 1043138475, 1772853454, 3446457162 ]
@@ -57,6 +57,9 @@ def getItemName(itemId):
 	items[729893597] = 'Fusion Rifle Telemetry'
 	items[3036931873] = 'Rocket Launcher Telemetry'
 	items[1485751393] = 'Machine Gun Telemetry'
+	items[705234570] = 'Primary Telemetry'
+	items[3371478409] = 'Special Telemetry'
+	items[2929837733] = 'Heavy Telemetry'
 
 	items[3783295803] = 'Ether Seeds'
 	items[1043138475] = 'Black Wax Idol'
