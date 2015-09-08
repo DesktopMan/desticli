@@ -1,6 +1,6 @@
 # About
 
-Desticli is a command line interface for Destiny. It doesn't do much yet but I already find it useful. Maybe you will as well?
+Desticli is a command line interface for Destiny. It can automatically distribute various items across all your characters.
 
 ## Installation
 
@@ -22,7 +22,7 @@ Run _./desticli.py -h_ to get usage options.
 
 ### normalize - Item normalization
 
-The only feature of Desticli at the moment. Evenly destributes the given items across all your characters. The vault will not be normalized but it must have one free slot.
+The only feature of Desticli at the moment. Evenly destributes the given items across all your characters. The vault will not be normalized but it must have one free general slot.
 
 #### Item groups
 
@@ -34,6 +34,7 @@ Items are organized into groups. The following groups are supported:
 * telemetries
 * glimmer_boosters
 * weapon_parts
+* armor_materials
 * strange_coins
 * motes_of_light
 * exotic_shards
@@ -44,5 +45,5 @@ You can supply multiple groups if you want to. The alias _all_ will normalize al
 
 ```
 ./desticli.py normalize all
-./desticli.py normalize strange_coins weapon_parts
+./desticli.py normalize weapon_parts armor_materials
 ```
