@@ -26,7 +26,7 @@ def getItemCategories():
 
 	ic['weapon_parts'] = [ 1898539128 ]
 	ic['strange_coins'] = [ 1738186005 ]
-	ic['motes_of_light'] = [ 583698483 ]
+	ic['motes_of_light'] = [ 937555249 ]
 	ic['exotic_shards'] = [ 452597397 ]
 
 	return ic
@@ -64,7 +64,7 @@ def getItemName(itemId):
 
 	items[1898539128] = 'Weapon Part'
 	items[1738186005] = 'Strange Coin'
-	items[583698483] = 'Mote of Light'
+	items[937555249] = 'Mote of Light'
 	items[452597397] = 'Exotic Shard'
 
 	if itemId in items:
