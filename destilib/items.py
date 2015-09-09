@@ -77,6 +77,19 @@ def getItemName(itemId):
 
 	return 'Unknown Item'
 
+def getItemIds(categories):
+	ic = getItemCategories()
+	itemIds = []
+
+	if 'all' in categories:
+		for cat in ic:
+			itemIds.extend(ic[cat])
+	else:
+		for cat in categories:
+			itemIds.extend(ic[cat])
+
+	return itemIds
+
 def getItemField(inventory, itemId, field, default):
 	# Special handling of stack size
 	count = 0
@@ -94,24 +107,13 @@ def getItemField(inventory, itemId, field, default):
 	return default
 
 def normalize(config, session, args):
-	ic = getItemCategories()
-	itemIds = []
+	print 'Normalizing items...'
 
-	if 'all' in args.filter:
-		for cat in ic:
-			itemIds.extend(ic[cat])
-	else:
-		for cat in args.filter:
-			itemIds.extend(ic[cat])
+	itemIds = getItemIds(args.filter)
 
-	# Grab inventories, only done once per normalize
 	userId = user.getId(session, config.DISPLAY_NAME)
 	characters = user.getCharacters(session, userId)
-
-	inventories = {}
-
-	for c in characters:
-		inventories[c] = getCharacterInventory(session, userId, c)
+	inventories = user.getCharacterInventories(session, userId, characters)
 
 	for itemId in itemIds:
 		normalizeItem(session, itemId, inventories)
@@ -147,66 +149,51 @@ def normalizeItem(session, itemId, inventories):
 						moveItem(session, itemId, c2, c, spare)
 						need -= spare
 
+def move(config, session, args):
+	print 'Moving items...'
+
+	itemIds = getItemIds(args.filter)
+
+	userId = user.getId(session, config.DISPLAY_NAME)
+	characters = user.getCharacters(session, userId)
+	inventories = user.getCharacterInventories(session, userId, characters)
+
+	for itemId in itemIds:
+		for character, items in inventories.iteritems():
+			stackSize = getItemField(items, itemId, 'stackSize', 0)
+
+			if stackSize > 0:
+				moveItemToFromVault(session, itemId, character, stackSize, True)
+
 def moveItem(session, itemId, source, dest, count):
-	print "Moving %s * %d..." % (getItemName(itemId), count)
+	# First move the item(s) to the vault
+	moveItemToFromVault(session, itemId, source, count, True)
+
+	# Then move the item(s) to the destination
+	moveItemToFromVault(session, itemId, dest, count, False)
+
+def moveItemToFromVault(session, itemId, character, count, toVault):
+	print "Moving %s * %d %s the vault..." % (getItemName(itemId), count, 'to' if toVault else 'from')
 
 	URL = 'https://www.bungie.net/Platform/Destiny/TransferItem/'
 	body = {}
 
-	# First move the item(s) to the vault
-	body['characterId'] = source
+	body['characterId'] = character
 	body['membershipType'] = 2
 	body['itemReferenceHash'] = itemId
 	body['stackSize'] = count
-	body['transferToVault'] = True
+	body['transferToVault'] = toVault
 
 	response = session.post(URL, data=json.dumps(body))
 
 	if response.status_code != 200:
-		print 'Failed to move item(s) to the vault. Server error.'
+		print 'Failed to move item(s) %s the vault. Server error.' % ('to' if toVault else 'from')
 		time.sleep(1)
 		return
 
 	if json.loads(response.text)['ErrorStatus'] != 'Success':
-		print 'Failed to move item(s) to the vault. Vault full?'
+		print 'Failed to move item(s) %s the vault. Vault/character full?' % ('to' if toVault else 'from')
 		time.sleep(1)
 		return
 
 	time.sleep(1)
-
-	# Then move the item(s) to the destination
-	body['characterId'] = dest
-	body['transferToVault'] = False
-
-	response = session.post(URL, data=json.dumps(body))
-
-	if response.status_code != 200:
-		print 'Failed to move item(s) from the vault. Server error.'
-		time.sleep(1)
-		return
-
-	if json.loads(response.text)['ErrorStatus'] != 'Success':
-		print 'Failed to move item(s) from the vault. Character full?'
-		time.sleep(1)
-		return
-
-	time.sleep(1)
-
-def getCharacterInventory(session, userId, characterId):
-	URL = 'https://www.bungie.net/Platform/Destiny/2/Account/%s/Character/%s/Inventory/?definitions=false'
-	response = session.get(URL % (userId, characterId))
-	itemData = json.loads(response.text)['Response']['data']['buckets']['Item']
-
-	items = []
-
-	for itemList in itemData:
-		items.extend(itemList['items'])
-
-	return items
-
-def getVaultInventory(session):
-	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Vault/?definitions=false'
-
-	response = session.get(URL)
-
-	return json.loads(response.text)['Response']['data']['buckets'][2]['items']

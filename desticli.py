@@ -22,6 +22,11 @@ parser_normalize = subparsers.add_parser('normalize', help='Normalize stacks eve
 parser_normalize.add_argument('filter', choices=items.getItemCategories().keys(), nargs='+', help='Item filter')
 parser_normalize.set_defaults(func=items.normalize)
 
+parser_move = subparsers.add_parser('move', help='Move stacks to the vault')
+parser_move.add_argument('destination', choices=['vault'], help='Item destination')
+parser_move.add_argument('filter', choices=items.getItemCategories().keys(), nargs='+', help='Item filter')
+parser_move.set_defaults(func=items.move)
+
 args = parser.parse_args()
 
 print 'Authenticating with PSN/Bungie...'
@@ -64,8 +69,6 @@ else:
 if not session:
 	print "Failed to authenticate against PSN / Bungie. Wrong credentials?"
 	exit()
-
-print 'Normalizing items...'
 
 # Authentication is complete, time to do some work
 args.func(config, session, args)

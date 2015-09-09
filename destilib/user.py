@@ -20,3 +20,30 @@ def getCharacters(session, id):
 		characters.append(c['characterBase']['characterId'])
 
 	return characters
+
+def getCharacterInventory(session, userId, characterId):
+	URL = 'https://www.bungie.net/Platform/Destiny/2/Account/%s/Character/%s/Inventory/?definitions=false'
+	response = session.get(URL % (userId, characterId))
+	itemData = json.loads(response.text)['Response']['data']['buckets']['Item']
+
+	items = []
+
+	for itemList in itemData:
+		items.extend(itemList['items'])
+
+	return items
+
+def getCharacterInventories(session, userId, characters):
+	inventories = {}
+
+	for c in characters:
+		inventories[c] = getCharacterInventory(session, userId, c)
+
+	return inventories
+
+def getVaultInventory(session):
+	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Vault/?definitions=false'
+
+	response = session.get(URL)
+
+	return json.loads(response.text)['Response']['data']['buckets'][2]['items']
