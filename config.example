@@ -1,4 +1,4 @@
 API_KEY = ''
 DISPLAY_NAME = ''
-# USERNAME = ''
-# PASSWORD = ''
+USERNAME = ''
+PASSWORD = ''
