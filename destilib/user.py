@@ -2,15 +2,15 @@ import urlparse
 import requests
 import json
 
-def getId(session, displayName):
+def getId(config):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/Stats/GetMembershipIdByDisplayName/'
-	response = session.get(urlparse.urljoin(URL, displayName))
+	response = config.session.get(urlparse.urljoin(URL, config.DISPLAY_NAME))
 
 	return json.loads(response.text)['Response']
 
-def getCharacters(session, id):
+def getCharacters(config):
 	URL = 'https://www.bungie.net/Platform/Destiny/TigerPSN/Account/'
-	response = session.get(urlparse.urljoin(URL, id))
+	response = config.session.get(urlparse.urljoin(URL, config.userId))
 
 	data = json.loads(response.text)['Response']['data']
 
@@ -21,9 +21,9 @@ def getCharacters(session, id):
 
 	return characters
 
-def getCharacterInventory(session, userId, characterId):
+def getCharacterInventory(config, characterId):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/Account/%s/Character/%s/Inventory/?definitions=false'
-	response = session.get(URL % (userId, characterId))
+	response = config.session.get(URL % (config.userId, characterId))
 	itemData = json.loads(response.text)['Response']['data']['buckets']['Item']
 
 	items = []
@@ -33,17 +33,17 @@ def getCharacterInventory(session, userId, characterId):
 
 	return items
 
-def getCharacterInventories(session, userId, characters):
+def getCharacterInventories(config):
 	inventories = {}
 
-	for c in characters:
-		inventories[c] = getCharacterInventory(session, userId, c)
+	for c in config.characters:
+		inventories[c] = getCharacterInventory(config, c)
 
 	return inventories
 
-def getVaultInventory(session):
+def getVaultInventory(config):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Vault/?definitions=false'
 
-	response = session.get(URL)
+	response = config.session.get(URL)
 
 	return json.loads(response.text)['Response']['data']['buckets'][2]['items']

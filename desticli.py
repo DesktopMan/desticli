@@ -75,7 +75,17 @@ if not session:
 	print "Failed to authenticate against PSN / Bungie. Wrong credentials?"
 	exit()
 
+# Populate runtime config with common requirements to speed things up
+print 'Fetching user information...'
+
+config.session = session
+if hasattr(config, 'USER_ID') and config.USER_ID != '':
+	config.userId = config.USER_ID
+else:
+	config.userId = user.getId(config)
+config.characters = user.getCharacters(config)
+
 # Authentication is complete, time to do some work
-args.func(config, session, args)
+args.func(config, args)
 
 print 'Done.'

@@ -106,19 +106,16 @@ def getItemField(inventory, itemId, field, default):
 
 	return default
 
-def normalize(config, session, args):
+def normalize(config, args):
 	print 'Normalizing items...'
 
 	itemIds = getItemIds(args.filter)
-
-	userId = user.getId(session, config.DISPLAY_NAME)
-	characters = user.getCharacters(session, userId)
-	inventories = user.getCharacterInventories(session, userId, characters)
+	inventories = user.getCharacterInventories(config)
 
 	for itemId in itemIds:
-		normalizeItem(session, itemId, inventories)
+		normalizeItem(config, itemId, inventories)
 
-def normalizeItem(session, itemId, inventories):
+def normalizeItem(config, itemId, inventories):
 	# Fetch the stack size for each character
 	itemCount = {}
 
@@ -143,36 +140,33 @@ def normalizeItem(session, itemId, inventories):
 					spare = itemCount[c2] - targetCount
 
 					if spare >= need: # Inventory has enough
-						moveItem(session, itemId, c2, c, need)
+						moveItem(config, itemId, c2, c, need)
 						break
 					else: # Not enough, move what we can and try the next inventory
-						moveItem(session, itemId, c2, c, spare)
+						moveItem(config, itemId, c2, c, spare)
 						need -= spare
 
-def move(config, session, args):
+def move(config, args):
 	print 'Moving items...'
 
 	itemIds = getItemIds(args.filter)
-
-	userId = user.getId(session, config.DISPLAY_NAME)
-	characters = user.getCharacters(session, userId)
-	inventories = user.getCharacterInventories(session, userId, characters)
+	inventories = user.getCharacterInventories(config)
 
 	for itemId in itemIds:
 		for character, items in inventories.iteritems():
 			stackSize = getItemField(items, itemId, 'stackSize', 0)
 
 			if stackSize > 0:
-				moveItemToFromVault(session, itemId, character, stackSize, True)
+				moveItemToFromVault(config, itemId, character, stackSize, True)
 
-def moveItem(session, itemId, source, dest, count):
+def moveItem(config, itemId, source, dest, count):
 	# First move the item(s) to the vault
-	moveItemToFromVault(session, itemId, source, count, True)
+	moveItemToFromVault(config, itemId, source, count, True)
 
 	# Then move the item(s) to the destination
-	moveItemToFromVault(session, itemId, dest, count, False)
+	moveItemToFromVault(config, itemId, dest, count, False)
 
-def moveItemToFromVault(session, itemId, character, count, toVault):
+def moveItemToFromVault(config, itemId, character, count, toVault):
 	print "Moving %s * %d %s the vault..." % (getItemName(itemId), count, 'to' if toVault else 'from')
 
 	URL = 'https://www.bungie.net/Platform/Destiny/TransferItem/'
@@ -184,7 +178,7 @@ def moveItemToFromVault(session, itemId, character, count, toVault):
 	body['stackSize'] = count
 	body['transferToVault'] = toVault
 
-	response = session.post(URL, data=json.dumps(body))
+	response = config.session.post(URL, data=json.dumps(body))
 
 	if response.status_code != 200:
 		print 'Failed to move item(s) %s the vault. Server error.' % ('to' if toVault else 'from')
