@@ -11,6 +11,7 @@ import config
 from destilib import auth
 from destilib import items
 from destilib import user
+from destilib import vendor
 
 logging.basicConfig(level=logging.WARN)
 
@@ -26,6 +27,10 @@ parser_move = subparsers.add_parser('move', help='Move stacks to the vault')
 parser_move.add_argument('destination', choices=['vault'], help='Item destination')
 parser_move.add_argument('filter', choices=items.getItemCategories().keys(), nargs='+', help='Item filter')
 parser_move.set_defaults(func=items.move)
+
+parser_move = subparsers.add_parser('missing', help='Show missing items that are for sale')
+parser_move.add_argument('collection', choices=['emblems'], help='Collection')
+parser_move.set_defaults(func=vendor.missing)
 
 args = parser.parse_args()
 

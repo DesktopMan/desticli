@@ -1,6 +1,6 @@
 # About
 
-Desticli is a command line interface for Destiny. It's main focus is to help you manage item stacks easily. The script can be configured to run without user interaction. Only PSN authentication is supported at the moment. Xbox Live might come later.
+Desticli is a command line interface for Destiny. It's main focus is to help you manage item stacks and collections easily. The script can be configured to run without user interaction. Only PSN authentication is supported at the moment. Xbox Live might come later.
 
 ## Installation
 
@@ -20,7 +20,7 @@ Run _./desticli.py -h_ to get usage options.
 
 See item groups below for a list of supported groups.
 
-### normalize - Item normalization
+### *normalize* - Item normalization
 
 Evenly destributes the given items across all your characters. The vault will not be normalized but it must have one free general slot.
 
@@ -29,18 +29,28 @@ Evenly destributes the given items across all your characters. The vault will no
 ./desticli.py normalize weapon_parts armor_materials
 ```
 
-### move - Move items to character/vault
+### *move* - Move items to the vault
 
-Only vault is supported at the moment. Characters will come soon.
+Moves items to the vault. Character support is planned.
 
 ```
 ./desticli.py move vault all
 ./desticli.py move vault weapon_parts armor_materials
 ```
 
+### *missing* - Show missing collection items that are for sale
+
+Checks your collections and compares it to the current vendor items for sale. Only supports emblems from the Outfitter at the moment. Shader support is right around the corner.
+
+The items are printed in the order they are sold so should be easy to find.
+
+```
+./desticli.py missing emblems
+```
+
 ## Item groups
 
-Items are organized into groups. The following groups are supported for all commands:
+Items are organized into groups. The following groups are supported by *normalize* and *move*:
 
 * materials - Ascendant Shard, Ascendant Energy, Radiant Shard, Radiant Energy
 * resources - Spinmetal, Helium Filaments, Relic Iron, Spirit Bloom
