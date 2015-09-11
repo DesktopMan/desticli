@@ -4,29 +4,25 @@ Desticli is a command line interface for Destiny. It's main focus is to help you
 
 ## Installation
 
-Desticli only depends on a recent version the _requests_ library. Install it with _pip_ and you should be good to go.
+Desticli is written in Python and only depends on a recent version the _requests_ library. Install it with _pip_ and you should be good to go.
 
 ## Configuration
 
-Copy _config.example_ to _config.py_ and fill in the the fields. Only API key and display name is required. Get the API key at:
+Copy _config.example_ to _config.py_ and fill in the the fields. If you supply your PSN username and password in the config file the script will run without user interaction. Only API key and display name is required. Get the API key at:
 
 https://www.bungie.net/en/user/api
 
-Optional: If you supply your PSN username and password in the config file the script will run without user interaction.
-
 ## Usage
 
-Run _./desticli.py -h_ to get usage options.
-
-See item groups below for a list of supported groups.
+Run _python desticli.py -h_ to get usage options.
 
 ### *normalize* - Item normalization
 
 Evenly distributes the given items across all your characters. The vault will not be normalized but it must have one free general slot.
 
 ```
-./desticli.py normalize all
-./desticli.py normalize weapon_parts armor_materials
+python desticli.py normalize all
+python desticli.py normalize weapon_parts armor_materials
 ```
 
 #### Supported groups
@@ -38,8 +34,8 @@ See *Item groups*
 Moves items to the vault. Character support is planned.
 
 ```
-./desticli.py move vault all
-./desticli.py move vault weapon_parts armor_materials
+python desticli.py move vault all
+python desticli.py move vault weapon_parts armor_materials
 ```
 
 #### Supported groups
@@ -53,8 +49,8 @@ Checks your collections and compares it to the current vendor items for sale. On
 The items are printed in the order they are sold so should be easy to find.
 
 ```
-./desticli.py missing all
-./desticli.py missing emblems shaders
+python desticli.py missing all
+python desticli.py missing emblems shaders
 ```
 
 #### Supported collections
