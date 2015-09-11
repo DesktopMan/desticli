@@ -22,7 +22,7 @@ See item groups below for a list of supported groups.
 
 ### *normalize* - Item normalization
 
-Evenly destributes the given items across all your characters. The vault will not be normalized but it must have one free general slot.
+Evenly distributes the given items across all your characters. The vault will not be normalized but it must have one free general slot.
 
 ```
 ./desticli.py normalize all
