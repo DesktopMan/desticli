@@ -6,22 +6,39 @@ import user
 
 def missing(config, session, args):
 	category = ''
-	vendor = None
+	kioskId = None
+	vendorId = None
 
 	if args.collection == 'all':
 		args.collection = 'emblems'
 		missing(config, session, args)
 		args.collection = 'shaders'
 		missing(config, session, args)
+		args.collection = 'vehicles'
+		missing(config, session, args)
+		args.collection = 'ships'
+		missing(config, session, args)
 		return
 
 	if args.collection == 'emblems':
 		category = 'Emblems'
-		vendor = 3301500998
+		kioskId = 3301500998
+		vendorId = 134701236
 
 	if args.collection == 'shaders':
 		category = 'Shaders'
-		vendor = 2420628997
+		kioskId = 2420628997
+		vendorId = 134701236
+
+	if args.collection == 'vehicles':
+		category = 'Vehicles'
+		kioskId = 44395194
+		vendorId = 459708109
+
+	if args.collection == 'ships':
+		category = 'Ship Blueprints'
+		kioskId = 2244880194
+		vendorId = 459708109
 
 	userId = user.getId(session, config.DISPLAY_NAME)
 	characters = user.getCharacters(session, userId)
@@ -29,7 +46,7 @@ def missing(config, session, args):
 	print 'Looking for missing %s for sale...' % (category)
 
 	# Grab the collection
-	collection = getVendorForCharacter(session, userId, characters[0], vendor, False)[0]
+	collection = getVendorForCharacter(session, userId, characters[0], kioskId, False)[0]
 	if not collection:
 		return
 
@@ -38,14 +55,14 @@ def missing(config, session, args):
 	for cat in collection['saleItemCategories']:
 		haveItems.extend(cat['saleItems'])
 
-	# Grab the outfitter inventory with definitions
-	outfitter, definitions = getVendorForCharacter(session, userId, characters[0], 134701236, True)
-	if not outfitter:
+	# Grab the vendor inventory with definitions
+	vendor, definitions = getVendorForCharacter(session, userId, characters[0], vendorId, True)
+	if not vendor:
 		return
 
-	# Find the outfitter items
+	# Find the vendor items
 	saleItems = None
-	for cat in outfitter['saleItemCategories']:
+	for cat in vendor['saleItemCategories']:
 		if cat['categoryTitle'] == category:
 			saleItems = cat['saleItems']
 			break

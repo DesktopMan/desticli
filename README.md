@@ -29,6 +29,10 @@ Evenly distributes the given items across all your characters. The vault will no
 ./desticli.py normalize weapon_parts armor_materials
 ```
 
+#### Supported groups
+
+See *Item groups*
+
 ### *move* - Move items to the vault
 
 Moves items to the vault. Character support is planned.
@@ -38,17 +42,27 @@ Moves items to the vault. Character support is planned.
 ./desticli.py move vault weapon_parts armor_materials
 ```
 
+#### Supported groups
+
+See *Item groups*
+
 ### *missing* - Show missing collection items that are for sale
 
-Checks your collections and compares it to the current vendor items for sale. Only supports emblems and shaders from the Outfitter at the moment.
+Checks your collections and compares it to the current vendor items for sale. Only the Outfitter and the Shipwright are supported at the moment.
 
 The items are printed in the order they are sold so should be easy to find.
 
 ```
 ./desticli.py missing all
-./desticli.py missing emblems
-./desticli.py missing shaders
+./desticli.py missing emblems shaders
 ```
+
+#### Supported collections
+
+* emblems
+* shaders
+* ships
+* vehicles
 
 ## Item groups
 
