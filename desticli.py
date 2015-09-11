@@ -29,7 +29,7 @@ parser_move.add_argument('filter', choices=items.getItemCategories().keys(), nar
 parser_move.set_defaults(func=items.move)
 
 parser_move = subparsers.add_parser('missing', help='Show missing items that are for sale')
-parser_move.add_argument('collection', choices=['emblems'], help='Collection')
+parser_move.add_argument('collection', choices=['all','emblems','shaders'], help='Collection')
 parser_move.set_defaults(func=vendor.missing)
 
 args = parser.parse_args()

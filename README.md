@@ -40,12 +40,14 @@ Moves items to the vault. Character support is planned.
 
 ### *missing* - Show missing collection items that are for sale
 
-Checks your collections and compares it to the current vendor items for sale. Only supports emblems from the Outfitter at the moment. Shader support is right around the corner.
+Checks your collections and compares it to the current vendor items for sale. Only supports emblems and shaders from the Outfitter at the moment.
 
 The items are printed in the order they are sold so should be easy to find.
 
 ```
+./desticli.py missing all
 ./desticli.py missing emblems
+./desticli.py missing shaders
 ```
 
 ## Item groups

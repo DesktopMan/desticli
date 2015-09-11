@@ -5,37 +5,49 @@ import config
 import user
 
 def missing(config, session, args):
+	category = ''
+	vendor = None
+
+	if args.collection == 'all':
+		args.collection = 'emblems'
+		missing(config, session, args)
+		args.collection = 'shaders'
+		missing(config, session, args)
+		return
+
+	if args.collection == 'emblems':
+		category = 'Emblems'
+		vendor = 3301500998
+
+	if args.collection == 'shaders':
+		category = 'Shaders'
+		vendor = 2420628997
+
 	userId = user.getId(session, config.DISPLAY_NAME)
 	characters = user.getCharacters(session, userId)
 
-	if args.collection == 'emblems':
-		getMissingEmblems(session, userId, characters)
-
-def getMissingEmblems(session, userId, characters):
-	print 'Looking for missing Emblems for sale...'
+	print 'Looking for missing %s for sale...' % (category)
 
 	# Grab the collection
-	collection = getEmblemCollectionIventory(session, userId, characters[0], False)[0]
+	collection = getVendorForCharacter(session, userId, characters[0], vendor, False)[0]
 	if not collection:
 		return
 
-	# Find the collection Emblem vendor category
-	haveItems = None
-	for category in collection['saleItemCategories']:
-		if category['categoryTitle'] == 'Vendor':
-			haveItems = category['saleItems']
-			break
+	# Find the collection items
+	haveItems = []
+	for cat in collection['saleItemCategories']:
+		haveItems.extend(cat['saleItems'])
 
 	# Grab the outfitter inventory with definitions
-	outfitter, definitions = getOutfitterInventory(session, userId, characters[0], True)
+	outfitter, definitions = getVendorForCharacter(session, userId, characters[0], 134701236, True)
 	if not outfitter:
 		return
 
-	# Find the outfitter Emblem category
+	# Find the outfitter items
 	saleItems = None
-	for category in outfitter['saleItemCategories']:
-		if category['categoryTitle'] == 'Emblems':
-			saleItems = category['saleItems']
+	for cat in outfitter['saleItemCategories']:
+		if cat['categoryTitle'] == category:
+			saleItems = cat['saleItems']
 			break
 
 	# Look for each item in our collection
@@ -50,7 +62,7 @@ def getMissingEmblems(session, userId, characters):
 				break
 
 		if not owned:
-			print "Missing Emblem for sale: %s" % (definitions['items'][str(itemId)]['itemName'])
+			print "Missing: %s" % (definitions['items'][str(itemId)]['itemName'])
 
 def getVendorForCharacter(session, userId, character, vendor, definitions = False):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Character/%s/Vendor/%i/?definitions=%s' % (character, vendor, 'true' if definitions else 'false')
@@ -73,9 +85,3 @@ def getVendorForCharacter(session, userId, character, vendor, definitions = Fals
 		return response['data'], response['definitions']
 
 	return response['data'], None
-
-def getOutfitterInventory(session, userId, character, definitions = False):
-	return getVendorForCharacter(session, userId, character, 134701236, definitions)
-
-def getEmblemCollectionIventory(session, userId, character, definitions = False):
-	return getVendorForCharacter(session, userId, character, 3301500998, definitions)
