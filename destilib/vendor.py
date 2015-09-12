@@ -5,40 +5,25 @@ import config
 import user
 
 def missing(config, args):
-	category = ''
-	kioskId = None
-	vendorId = None
 
-	if args.collection == 'all':
-		args.collection = 'emblems'
-		missing(config, args)
-		args.collection = 'shaders'
-		missing(config, args)
-		args.collection = 'vehicles'
-		missing(config, args)
-		args.collection = 'ships'
-		missing(config, args)
-		return
 
-	if args.collection == 'emblems':
-		category = 'Emblems'
-		kioskId = 3301500998
-		vendorId = 134701236
+	if 'all' in args.collection:
+		args.collection = [ 'emblems', 'shaders', 'vehicles', 'ships' ]
 
-	if args.collection == 'shaders':
-		category = 'Shaders'
-		kioskId = 2420628997
-		vendorId = 134701236
+	for group in args.collection:
+		getMissingItems(config, group)
 
-	if args.collection == 'vehicles':
-		category = 'Vehicles'
-		kioskId = 44395194
-		vendorId = 459708109
+def getMissingItems(config, group):
+	groupMapping = {
+		'emblems' : { 'category': 'Emblems',         'kioskId': 3301500998, 'vendorId': 134701236 },
+		'shaders' : { 'category': 'Shaders',         'kioskId': 2420628997, 'vendorId': 134701236 },
+		'vehicles': { 'category': 'Vehicles',        'kioskId': 44395194,   'vendorId': 459708109 },
+		'ships'   : { 'category': 'Ship Blueprints', 'kioskId': 2244880194, 'vendorId': 459708109 }
+	}
 
-	if args.collection == 'ships':
-		category = 'Ship Blueprints'
-		kioskId = 2244880194
-		vendorId = 459708109
+	category = groupMapping[group]['category']
+	kioskId  = groupMapping[group]['kioskId']
+	vendorId = groupMapping[group]['vendorId']
 
 	print 'Looking for missing %s for sale...' % (category)
 
