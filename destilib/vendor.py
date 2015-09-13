@@ -5,8 +5,6 @@ import config
 import user
 
 def missing(config, args):
-
-
 	if 'all' in args.collection:
 		args.collection = [ 'emblems', 'shaders', 'vehicles', 'ships' ]
 
@@ -25,7 +23,8 @@ def getMissingItems(config, group):
 	kioskId  = groupMapping[group]['kioskId']
 	vendorId = groupMapping[group]['vendorId']
 
-	print 'Looking for missing %s for sale...' % (category)
+	print
+	print 'Looking for missing %s...' % (group)
 
 	# Grab the collection
 	collection = getVendorForCharacter(config, config.characters[0], kioskId)[0]
@@ -36,6 +35,15 @@ def getMissingItems(config, group):
 	haveItems = []
 	for cat in collection['saleItemCategories']:
 		haveItems.extend(cat['saleItems'])
+
+	# Count the total number of collection items still missing
+	totalMissing = 0
+
+	for colItem in haveItems:
+		if colItem['failureIndexes'] != []:
+			totalMissing += 1
+
+	print 'Collection is missing %i %s.' % (totalMissing, group if totalMissing != 1 else group[:-1])
 
 	# Grab the vendor inventory with definitions
 	vendor, definitions = getVendorForCharacter(config, config.characters[0], vendorId, True)
@@ -49,6 +57,8 @@ def getMissingItems(config, group):
 			saleItems = cat['saleItems']
 			break
 
+	foundMissingIds = []
+
 	# Look for each item in our collection
 	for saleItem in saleItems:
 		itemId = saleItem['item']['itemHash']
@@ -61,7 +71,13 @@ def getMissingItems(config, group):
 				break
 
 		if not owned:
-			print "Missing: %s" % (definitions['items'][str(itemId)]['itemName'])
+			foundMissingIds.append(itemId)
+
+	fmc = len(foundMissingIds) # Found missing count
+	print 'Found %i missing %s for sale%s' % (fmc, group if fmc != 1 else group[:-1], ':' if fmc else '.')
+
+	for itemId in foundMissingIds:
+		print '* %s' % (definitions['items'][str(itemId)]['itemName'])
 
 def getVendorForCharacter(config, characterId, vendorId, definitions = False):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Character/%s/Vendor/%i/?definitions=%s' % (characterId, vendorId, 'true' if definitions else 'false')
