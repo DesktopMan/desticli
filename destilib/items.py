@@ -9,11 +9,11 @@ def getItemCategories():
 
 	ic['all'] = []
 
-	# Ascendant Shard, Ascendant Energy, Radiant Shard, Radiant Energy
-	ic['materials'] = [ 258181985, 1893498008, 769865458, 616706469 ]
+	# Ascendant Shard, Ascendant Energy, Radiant Shard, Radiant Energy, Hadium Flake
+	ic['materials'] = [ 258181985, 1893498008, 769865458, 616706469, 3164836593 ]
 
-	# Spinmetal, Helium Filaments, Relic Iron, Spirit Bloom
-	ic['resources'] = [ 2882093969, 1797491610, 3242866270, 2254123540 ]
+	# Spinmetal, Helium Filaments, Relic Iron, Spirit Bloom, Wormspore
+	ic['resources'] = [ 2882093969, 1797491610, 3242866270, 2254123540, 3164836592 ]
 
 	# Primary, Special, Heavy
 	ic['synths'] = [ 2180254632, 928169143, 211861343 ]
@@ -38,11 +38,13 @@ def getItemName(itemId):
 		1893498008 : 'Ascendant Energy',
 		769865458  : 'Radiant Shard',
 		616706469  : 'Radiant Energy',
+		3164836593 : 'Hadium Flake',
 
 		2882093969 : 'Spinmetal',
 		1797491610 : 'Helium Filaments',
 		3242866270 : 'Relic Iron',
 		2254123540 : 'Spirit Bloom',
+		3164836592 : 'Wormspore',
 
 		2180254632 : 'Primary Synth',
 		928169143  : 'Special Synth',

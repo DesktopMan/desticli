@@ -64,8 +64,8 @@ python desticli.py missing emblems shaders
 
 Items are organized into groups. The following groups are supported by *normalize* and *move*:
 
-* materials - Ascendant Shard, Ascendant Energy, Radiant Shard, Radiant Energy
-* resources - Spinmetal, Helium Filaments, Relic Iron, Spirit Bloom
+* materials - Ascendant Shard, Ascendant Energy, Radiant Shard, Radiant Energy, Hadium Flake
+* resources - Spinmetal, Helium Filaments, Relic Iron, Spirit Bloom, Wormspore
 * synths
 * telemetries
 * glimmer_boosters
