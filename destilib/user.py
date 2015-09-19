@@ -34,10 +34,10 @@ def getCharacterInventory(config, characterId):
 	return items
 
 def getCharacterInventories(config):
-	inventories = {}
+	inventories = []
 
 	for c in config.characters:
-		inventories[c] = getCharacterInventory(config, c)
+		inventories.append(getCharacterInventory(config, c))
 
 	return inventories
 

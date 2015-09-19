@@ -23,8 +23,8 @@ parser_normalize = subparsers.add_parser('normalize', help='Normalize stacks eve
 parser_normalize.add_argument('filter', choices=items.getItemCategories().keys(), nargs='+', help='Item filter')
 parser_normalize.set_defaults(func=items.normalize)
 
-parser_move = subparsers.add_parser('move', help='Move stacks to the vault')
-parser_move.add_argument('destination', choices=['vault'], help='Item destination')
+parser_move = subparsers.add_parser('move', help='Move stacks to a character or the vault')
+parser_move.add_argument('destination', choices=['1', '2', '3', 'vault'], help='Item destination')
 parser_move.add_argument('filter', choices=items.getItemCategories().keys(), nargs='+', help='Item filter')
 parser_move.set_defaults(func=items.move)
 

@@ -119,12 +119,12 @@ def normalize(config, args):
 
 def normalizeItem(config, itemId, inventories):
 	# Fetch the stack size for each character
-	itemCount = {}
+	itemCount = []
 
-	for c in inventories:
-		itemCount[c] = getItemField(inventories[c], itemId, 'stackSize', 0)
+	for inventory in inventories:
+		itemCount.append(getItemField(inventory, itemId, 'stackSize', 0))
 
-	totalCount = sum(itemCount.values())
+	totalCount = sum(itemCount)
 
 	# Can't normalize less than three items
 	if totalCount < 3:
@@ -133,33 +133,56 @@ def normalizeItem(config, itemId, inventories):
 	# Number of items we want per character
 	targetCount = totalCount / len(inventories)
 
-	for c in itemCount:
-		if itemCount[c] < targetCount:
-			need = targetCount - itemCount[c] # Needed items
+	for c1index, c1count in enumerate(itemCount):
+		if c1count < targetCount:
+			need = targetCount - c1count # Needed items for character 1
 
-			for c2 in inventories: # Look for spare items in the other inventories
-				if itemCount[c2] > targetCount:
-					spare = itemCount[c2] - targetCount
+			# Look for spare items in the other inventories
+			for c2index, c2count in enumerate(itemCount):
+				# Skip comparing a character with itself
+				if c1index == c2index:
+					continue
+
+				if c2count > targetCount:
+					c1id = config.characters[c1index]
+					c2id = config.characters[c2index]
+					spare = c2count - targetCount
 
 					if spare >= need: # Inventory has enough
-						moveItem(config, itemId, c2, c, need)
+						moveItem(config, itemId, c2id, c1id, need)
 						break
 					else: # Not enough, move what we can and try the next inventory
-						moveItem(config, itemId, c2, c, spare)
+						moveItem(config, itemId, c2id, c1id, spare)
 						need -= spare
 
 def move(config, args):
 	print 'Moving items...'
 
 	itemIds = getItemIds(args.filter)
-	inventories = user.getCharacterInventories(config)
 
-	for itemId in itemIds:
-		for character, items in inventories.iteritems():
-			stackSize = getItemField(items, itemId, 'stackSize', 0)
+	destinationId = -1 # Default to vault
+	if args.destination != 'vault':
+		destinationId = int(args.destination) - 1
 
+	for i, characterId in enumerate(config.characters):
+		# Skip moving items from the destination
+		if i == destinationId:
+			continue
+
+		# Fetch character inventory
+		inventory = user.getCharacterInventory(config, characterId)
+
+		# Look for the items we are moving
+		for itemId in itemIds:
+			stackSize = getItemField(inventory, itemId, 'stackSize', 0)
+
+			# Move stack to the vault
 			if stackSize > 0:
-				moveItemToFromVault(config, itemId, character, stackSize, True)
+				moveItemToFromVault(config, itemId, characterId, stackSize, True)
+
+				# Move stack to destination character, if any
+				if destinationId != -1:
+					moveItemToFromVault(config, itemId, config.characters[destinationId], stackSize, False)
 
 def moveItem(config, itemId, source, dest, count):
 	# First move the item(s) to the vault

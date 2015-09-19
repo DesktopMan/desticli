@@ -29,13 +29,14 @@ python desticli.py normalize weapon_parts armor_materials
 
 See *Item groups*
 
-### *move* - Move items to the vault
+### *move* - Move items to a character or the vault
 
-Moves items to the vault. Character support is planned.
+Move items stored on characters to a specific character or the vault. Characters are numbered from 1 in the order they were created.
 
 ```
 python desticli.py move vault all
-python desticli.py move vault weapon_parts armor_materials
+python desticli.py move 1 weapon_parts armor_materials
+python desticli.py move 3 strange_coins
 ```
 
 #### Supported groups
