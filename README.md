@@ -70,6 +70,7 @@ Items are organized into groups. The following groups are supported by *normaliz
 * synths
 * telemetries
 * glimmer_boosters
+* glimmer_consumables
 * weapon_parts
 * armor_materials
 * strange_coins

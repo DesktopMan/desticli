@@ -23,6 +23,7 @@ def getItemCategories():
 
 	# Fallen, Hive, Vex, Kabal
 	ic['glimmer_boosters'] = [ 3783295803, 1043138475, 1772853454, 3446457162 ]
+	ic['glimmer_consumables'] = [ 269776572, 3632619276, 2904517731, 1932910919 ]
 
 	ic['weapon_parts'] = [ 1898539128 ]
 	ic['armor_materials'] = [ 1542293174 ]
@@ -66,6 +67,11 @@ def getItemName(itemId):
 		1043138475 : 'Black Wax Idol',
 		1772853454 : 'Blue Polyphage',
 		3446457162 : 'Resupply Codes',
+
+		269776572  : 'House Banners',
+		3632619276 : 'Silken Codex',
+		2904517731 : 'Axiomatic Beads',
+		1932910919 : 'Network Keys',
 
 		1898539128 : 'Weapon Parts',
 		1542293174 : 'Armor Materials',
