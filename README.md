@@ -76,5 +76,7 @@ Items are organized into groups. The following groups are supported by *normaliz
 * strange_coins
 * motes_of_light
 * exotic_shards
+* moldering_shards
+* passage_coins
 
 You can supply multiple groups if you want to. The alias _all_ will select all groups.
