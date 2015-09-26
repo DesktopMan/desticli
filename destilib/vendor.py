@@ -6,8 +6,10 @@ import user
 
 def getVendorName(vendorId):
 	vendors = {
-		134701236  : 'Guardian Outfitter',
+		2668878854 : 'Vanguard Quartermaster',
+		3658200622 : 'Crucible Quartermaster',
 		459708109  : 'Shipwright',
+		134701236  : 'Guardian Outfitter',
 		2796397637 : 'Xur'
 	}
 
@@ -27,7 +29,7 @@ def getMissingItems(config, group):
 	groupMapping = {
 		'emblems' : { 'category': 'Emblems',         'kioskIds': [ 3301500998 ], 'vendorIds': [ 134701236 ] },
 		'shaders' : { 'category': 'Shaders',         'kioskIds': [ 2420628997 ], 'vendorIds': [ 134701236 ] },
-		'vehicles': { 'category': 'Vehicles',        'kioskIds': [ 44395194   ], 'vendorIds': [ 459708109 ] },
+		'vehicles': { 'category': 'Vehicles',        'kioskIds': [ 44395194   ], 'vendorIds': [ 2668878854, 3658200622, 459708109 ] },
 		'ships'   : { 'category': 'Ship Blueprints', 'kioskIds': [ 2244880194 ], 'vendorIds': [ 459708109 ] },
 		'exotics' : { 'category': 'Exotic Gear',     'kioskIds': [ 1460182514, 3902439767 ], 'vendorIds': [ 2796397637 ] }
 	}
