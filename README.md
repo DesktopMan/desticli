@@ -45,7 +45,7 @@ See *Item groups*
 
 ### *missing* - Show missing collection items that are for sale
 
-Checks your collections and compares it to the current vendor items for sale. Only the Outfitter and the Shipwright are supported at the moment.
+Checks your collections and compares it to the current vendor items for sale. Vendors checked are: The Outfitter, the Shipwright and Xur.
 
 The items are printed in the order they are sold so should be easy to find.
 
@@ -60,6 +60,7 @@ python desticli.py missing emblems shaders
 * shaders
 * ships
 * vehicles
+* exotics
 
 ## Item groups
 
