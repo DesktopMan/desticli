@@ -88,6 +88,11 @@ def getMissingItems(config, group):
 				saleItems = cat['saleItems']
 				break
 
+		# Xur doesn't always have items
+		if not saleItems and vendorId == 2796397637:
+			print 'Found no Xur items for sale. Weekday?'
+			continue
+
 		# Look for each item in our collection
 		for saleItem in saleItems:
 			itemId = saleItem['item']['itemHash']
