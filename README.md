@@ -62,6 +62,14 @@ python desticli.py missing emblems shaders
 * vehicles
 * exotics
 
+### *exotics* - destinyexotics.com integration
+
+Automatically updates your destinyexotics.com profile based on your exotic blueprints, vault and character inventories.
+
+```
+python desticli.py exotics update
+```
+
 ## Item groups
 
 Items are organized into groups. The following groups are supported by *normalize* and *move*:

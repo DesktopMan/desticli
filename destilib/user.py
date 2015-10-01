@@ -21,10 +21,11 @@ def getCharacters(config):
 
 	return characters
 
-def getCharacterInventory(config, characterId):
+def getCharacterInventory(config, characterId, bucket = 'Item'):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/Account/%s/Character/%s/Inventory/?definitions=false'
 	response = config.session.get(URL % (config.userId, characterId))
-	itemData = json.loads(response.text)['Response']['data']['buckets']['Item']
+
+	itemData = json.loads(response.text)['Response']['data']['buckets'][bucket]
 
 	items = []
 
@@ -41,9 +42,9 @@ def getCharacterInventories(config):
 
 	return inventories
 
-def getVaultInventory(config):
+def getVaultInventory(config, bucket = 2):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Vault/?definitions=false'
 
 	response = config.session.get(URL)
 
-	return json.loads(response.text)['Response']['data']['buckets'][2]['items']
+	return json.loads(response.text)['Response']['data']['buckets'][bucket]['items']

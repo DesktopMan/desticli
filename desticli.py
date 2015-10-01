@@ -12,6 +12,7 @@ from destilib import auth
 from destilib import items
 from destilib import user
 from destilib import vendor
+from destilib import exotics
 
 logging.basicConfig(level=logging.WARN)
 
@@ -31,6 +32,10 @@ parser_move.set_defaults(func=items.move)
 parser_move = subparsers.add_parser('missing', help='Show missing items that are for sale')
 parser_move.add_argument('collection', choices=['all','emblems','shaders','vehicles','ships','exotics'], nargs='+', help='Collection')
 parser_move.set_defaults(func=vendor.missing)
+
+parser_move = subparsers.add_parser('exotics', help='destinyexotics.com integration')
+parser_move.add_argument('command', choices=['update'], help='Update your destinyexotics.com profile based on your exotic blueprints, vault and character inventories')
+parser_move.set_defaults(func=exotics.update)
 
 args = parser.parse_args()
 
