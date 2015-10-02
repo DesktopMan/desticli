@@ -38,9 +38,29 @@ def update(config, args):
 
 	userId = response['link'].split('/')[2]
 
-	print 'Fetching kiosk and character inventories...'
+	print 'Fetching item list from Destiny Exotics...'
+
+	response = session.get(URL + '/api/items/?fields=itemHash&sections=true&user=%s' % (userId))
+
+	if response.status_code != 200:
+		print 'Failed fetching item list from Destiny Exotics. Server error?'
+		return
+
+	response = json.loads(response.text)
+
+	if response['status'] != 'ok':
+		print 'Failed fetching item list from Destiny Exotics. Bad request?'
+		return
 
 	items = {}
+
+	# Initialize item list from Destiny Exotics
+	for section in response['sections']:
+		for group in section['groups']:
+			for item in group['items']:
+				items[int(item['itemHash'])] = 0
+
+	print 'Fetching kiosk and character inventories...'
 
 	# Check vendor kiosks first
 	for character in config.characters:
@@ -68,8 +88,11 @@ def update(config, args):
 
 		for item in inventory:
 			itemHash = item['itemHash']
-			if itemHash in items and item['isGridComplete']:
-				items[itemHash] = 2 # Fully upgraded
+			if itemHash in items:
+				if item['isGridComplete']:
+					items[itemHash] = 2 # Fully upgraded
+				elif items[itemHash] == 0:
+					items[itemHash] = 1 # Not upgraded
 
 	# Finally check the vault
 	vault = user.getVaultInventory(config, 1)
@@ -80,8 +103,11 @@ def update(config, args):
 
 	for item in vault:
 		itemHash = item['itemHash']
-		if itemHash in items and item['isGridComplete']:
-			items[itemHash] = 2 # Fully upgraded
+		if itemHash in items:
+			if item['isGridComplete']:
+				items[itemHash] = 2 # Fully upgraded
+			elif items[itemHash] == 0:
+				items[itemHash] = 1 # Not upgraded
 
 	print 'Updating Destiny Exotics...'
 
