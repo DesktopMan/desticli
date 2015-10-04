@@ -105,15 +105,21 @@ def getMissingItems(config, group):
 					break
 
 			itemName = definitions['items'][str(itemHash)]['itemName']
+
 			if not owned and not itemName.endswith('Engram'):
 				if not (itemHash == 1202047001 and group == 'shaders'): # Little Light workaround
-					foundMissingItems.append({ 'itemHash': itemHash, 'itemName': itemName, 'vendorId': vendorId })
+					foundMissingItems.append({
+						'itemHash': itemHash,
+						'itemName': itemName,
+						'rarity': definitions['items'][str(itemHash)]['tierTypeName'],
+						'vendor': getVendorName(vendorId)
+					})
 
 	fmc = len(foundMissingItems) # Found missing count
 	print 'Found %i missing %s for sale%s' % (fmc, group if fmc != 1 else group[:-1], ':' if fmc else '.')
 
 	for item in foundMissingItems:
-		print '* %s (%s)' % (item['itemName'], getVendorName(item['vendorId']))
+		print '* %s (%s, %s)' % (item['itemName'], item['rarity'], item['vendor'])
 
 def getVendorForCharacter(config, characterId, vendorId, definitions = False):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Character/%s/Vendor/%i/?definitions=%s' % (characterId, vendorId, 'true' if definitions else 'false')
