@@ -95,18 +95,19 @@ def getMissingItems(config, group):
 
 		# Look for each item in our collection
 		for saleItem in saleItems:
-			itemId = saleItem['item']['itemHash']
+			itemHash = saleItem['item']['itemHash']
 
 			owned = False
 
 			for colItem in haveItems:
-				if colItem['item']['itemHash'] == itemId and colItem['failureIndexes'] == []:
+				if colItem['item']['itemHash'] == itemHash and colItem['failureIndexes'] == []:
 					owned = True
 					break
 
-			itemName = definitions['items'][str(itemId)]['itemName']
+			itemName = definitions['items'][str(itemHash)]['itemName']
 			if not owned and not itemName.endswith('Engram'):
-				foundMissingItems.append({ 'itemId': itemId, 'itemName': itemName, 'vendorId': vendorId })
+				if not (itemHash == 1202047001 and group == 'shaders'): # Little Light workaround
+					foundMissingItems.append({ 'itemHash': itemHash, 'itemName': itemName, 'vendorId': vendorId })
 
 	fmc = len(foundMissingItems) # Found missing count
 	print 'Found %i missing %s for sale%s' % (fmc, group if fmc != 1 else group[:-1], ':' if fmc else '.')
