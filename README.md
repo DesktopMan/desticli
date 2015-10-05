@@ -45,7 +45,7 @@ See *Item groups*
 
 ### *missing* - Show missing collection items that are for sale
 
-Checks your collections and compares it to the current vendor items for sale. Vendors checked are: Vanguard Quartermaster, Crucible Quartermaster, Outfitter, Shipwright and Xur.
+Checks your collections and compares it to the current vendor items for sale. Vendors checked are: Vanguard Quartermaster, Crucible Quartermaster, Outfitter, Shipwright, Variks and Xur.
 
 The items are printed in the order they are sold so should be easy to find.
 

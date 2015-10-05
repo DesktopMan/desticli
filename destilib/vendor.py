@@ -10,6 +10,7 @@ def getVendorName(vendorId):
 		3658200622 : 'Crucible Quartermaster',
 		459708109  : 'Shipwright',
 		134701236  : 'Guardian Outfitter',
+		1998812735 : 'Variks',
 		2796397637 : 'Xur'
 	}
 
@@ -27,14 +28,38 @@ def missing(config, args):
 
 def getMissingItems(config, group):
 	groupMapping = {
-		'emblems' : { 'category': 'Emblems',         'kioskIds': [ 3301500998 ], 'vendorIds': [ 134701236 ] },
-		'shaders' : { 'category': 'Shaders',         'kioskIds': [ 2420628997 ], 'vendorIds': [ 134701236 ] },
-		'vehicles': { 'category': 'Vehicles',        'kioskIds': [ 44395194   ], 'vendorIds': [ 2668878854, 3658200622, 459708109 ] },
-		'ships'   : { 'category': 'Ship Blueprints', 'kioskIds': [ 2244880194 ], 'vendorIds': [ 459708109 ] },
-		'exotics' : { 'category': 'Exotic Gear',     'kioskIds': [ 1460182514, 3902439767 ], 'vendorIds': [ 2796397637 ] }
+		'emblems' : {
+			'categories': [ 'Emblems' ],
+			'kioskIds'  : [ 3301500998 ],
+			'vendorIds' : [ 134701236 ]
+		},
+
+		'shaders' : {
+			'categories': [ 'Shaders', 'House of Judgment: Rank 3' ],
+			'kioskIds'  : [ 2420628997 ],
+			'vendorIds' : [ 134701236, 1998812735 ]
+		},
+
+		'vehicles': {
+			'categories': [ 'Vehicles' ],
+			'kioskIds'  : [ 44395194   ],
+			'vendorIds' : [ 2668878854, 3658200622, 459708109 ]
+		},
+
+		'ships'   : {
+			'categories': [ 'Ship Blueprints', 'House of Judgment: Rank 2' ],
+			'kioskIds'  : [ 2244880194 ],
+			'vendorIds' : [ 459708109, 1998812735 ]
+		},
+
+		'exotics' : {
+			'categories': [ 'Exotic Gear' ],
+			'kioskIds'  : [ 1460182514, 3902439767 ],
+			'vendorIds' : [ 2796397637 ]
+		}
 	}
 
-	category = groupMapping[group]['category']
+	categories = groupMapping[group]['categories']
 	kioskIds  = groupMapping[group]['kioskIds']
 	vendorIds = groupMapping[group]['vendorIds']
 
@@ -84,13 +109,17 @@ def getMissingItems(config, group):
 
 		saleItems = None
 		for cat in vendor['saleItemCategories']:
-			if cat['categoryTitle'] == category:
+			if cat['categoryTitle'] in categories:
 				saleItems = cat['saleItems']
 				break
 
 		# Xur doesn't always have items
 		if not saleItems and vendorId == 2796397637:
 			print 'Found no Xur items for sale. Weekday?'
+			continue
+
+		if not saleItems:
+			print 'Found no items for sale. API issue?'
 			continue
 
 		# Look for each item in our collection
