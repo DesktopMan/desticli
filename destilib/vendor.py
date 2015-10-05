@@ -29,37 +29,37 @@ def missing(config, args):
 def getMissingItems(config, group):
 	groupMapping = {
 		'emblems' : {
-			'categories': [ 'Emblems' ],
+			'typeNames' : [ 'Emblem' ],
 			'kioskIds'  : [ 3301500998 ],
 			'vendorIds' : [ 134701236 ]
 		},
 
 		'shaders' : {
-			'categories': [ 'Shaders', 'House of Judgment: Rank 3' ],
+			'typeNames' : [ 'Armor Shader' ],
 			'kioskIds'  : [ 2420628997 ],
 			'vendorIds' : [ 134701236, 1998812735 ]
 		},
 
 		'vehicles': {
-			'categories': [ 'Vehicles' ],
+			'typeNames' : [ 'Vehicle'] ,
 			'kioskIds'  : [ 44395194   ],
 			'vendorIds' : [ 2668878854, 3658200622, 459708109 ]
 		},
 
 		'ships'   : {
-			'categories': [ 'Ship Blueprints', 'House of Judgment: Rank 2' ],
+			'typeNames' : [ 'Ship' ],
 			'kioskIds'  : [ 2244880194 ],
 			'vendorIds' : [ 459708109, 1998812735 ]
 		},
 
 		'exotics' : {
-			'categories': [ 'Exotic Gear' ],
+			'typeNames' : [], # All types
 			'kioskIds'  : [ 1460182514, 3902439767 ],
 			'vendorIds' : [ 2796397637 ]
 		}
 	}
 
-	categories = groupMapping[group]['categories']
+	typeNames = groupMapping[group]['typeNames']
 	kioskIds  = groupMapping[group]['kioskIds']
 	vendorIds = groupMapping[group]['vendorIds']
 
@@ -103,15 +103,14 @@ def getMissingItems(config, group):
 	# Check the vendor items for each vendor
 	for vendorId in vendorIds:
 		vendor, definitions = getVendorForCharacter(config, config.characters[0], vendorId, True)
+
 		if not vendor:
 			print 'Failed to get vendor content. Aborting.'
 			return
 
-		saleItems = None
+		saleItems = []
 		for cat in vendor['saleItemCategories']:
-			if cat['categoryTitle'] in categories:
-				saleItems = cat['saleItems']
-				break
+			saleItems.extend(cat['saleItems'])
 
 		# Xur doesn't always have items
 		if not saleItems and vendorId == 2796397637:
@@ -125,6 +124,10 @@ def getMissingItems(config, group):
 		# Look for each item in our collection
 		for saleItem in saleItems:
 			itemHash = saleItem['item']['itemHash']
+			typeName = definitions['items'][str(itemHash)]['itemTypeName']
+
+			if typeNames and not typeName in typeNames:
+				continue
 
 			owned = False
 
@@ -136,13 +139,12 @@ def getMissingItems(config, group):
 			itemName = definitions['items'][str(itemHash)]['itemName']
 
 			if not owned and not itemName.endswith('Engram'):
-				if not (itemHash == 1202047001 and group == 'shaders'): # Little Light workaround
-					foundMissingItems.append({
-						'itemHash': itemHash,
-						'itemName': itemName,
-						'rarity': definitions['items'][str(itemHash)]['tierTypeName'],
-						'vendor': getVendorName(vendorId)
-					})
+				foundMissingItems.append({
+					'itemHash': itemHash,
+					'itemName': itemName,
+					'rarity': definitions['items'][str(itemHash)]['tierTypeName'],
+					'vendor': getVendorName(vendorId)
+				})
 
 	fmc = len(foundMissingItems) # Found missing count
 	print 'Found %i missing %s for sale%s' % (fmc, group if fmc != 1 else group[:-1], ':' if fmc else '.')
