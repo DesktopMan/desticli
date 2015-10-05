@@ -11,6 +11,7 @@ def getVendorName(vendorId):
 		459708109  : 'Shipwright',
 		134701236  : 'Guardian Outfitter',
 		1998812735 : 'Variks',
+		1410745145 : 'Petra',
 		2796397637 : 'Xur'
 	}
 
@@ -31,13 +32,13 @@ def getMissingItems(config, group):
 		'emblems' : {
 			'typeNames' : [ 'Emblem' ],
 			'kioskIds'  : [ 3301500998 ],
-			'vendorIds' : [ 134701236 ]
+			'vendorIds' : [ 134701236, 1410745145 ]
 		},
 
 		'shaders' : {
 			'typeNames' : [ 'Armor Shader' ],
 			'kioskIds'  : [ 2420628997 ],
-			'vendorIds' : [ 134701236, 1998812735 ]
+			'vendorIds' : [ 134701236, 1998812735, 1410745145 ]
 		},
 
 		'vehicles': {
@@ -49,7 +50,7 @@ def getMissingItems(config, group):
 		'ships'   : {
 			'typeNames' : [ 'Ship' ],
 			'kioskIds'  : [ 2244880194 ],
-			'vendorIds' : [ 459708109, 1998812735 ]
+			'vendorIds' : [ 459708109, 1998812735, 1410745145 ]
 		},
 
 		'exotics' : {
