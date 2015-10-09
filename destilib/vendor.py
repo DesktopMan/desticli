@@ -60,6 +60,9 @@ def getMissingItems(config, group):
 		}
 	}
 
+	# Plasma Drive, "Emerald Coil", Heavy Ammo Synthesis, Three of Coins, Mote of Light
+	ignoredItems = [ 1880070441, 1880070440, 211861343, 417308266, 937555249 ]
+
 	typeNames = groupMapping[group]['typeNames']
 	kioskIds  = groupMapping[group]['kioskIds']
 	vendorIds = groupMapping[group]['vendorIds']
@@ -139,7 +142,7 @@ def getMissingItems(config, group):
 
 			itemName = definitions['items'][str(itemHash)]['itemName']
 
-			if not owned and not itemName.endswith('Engram'):
+			if not owned and not itemName.endswith('Engram') and not itemHash in ignoredItems:
 				foundMissingItems.append({
 					'itemHash': itemHash,
 					'itemName': itemName,
