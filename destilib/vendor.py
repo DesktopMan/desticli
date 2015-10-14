@@ -12,6 +12,7 @@ def getVendorName(vendorId):
 		134701236  : 'Guardian Outfitter',
 		1998812735 : 'Variks',
 		1410745145 : 'Petra',
+		242140165  : 'Lord Saladin',
 		2796397637 : 'Xur'
 	}
 
@@ -32,13 +33,13 @@ def getMissingItems(config, group):
 		'emblems' : {
 			'typeNames' : [ 'Emblem' ],
 			'kioskIds'  : [ 3301500998 ],
-			'vendorIds' : [ 134701236, 1410745145 ]
+			'vendorIds' : [ 134701236, 1410745145, 242140165 ]
 		},
 
 		'shaders' : {
 			'typeNames' : [ 'Armor Shader' ],
 			'kioskIds'  : [ 2420628997 ],
-			'vendorIds' : [ 134701236, 1998812735, 1410745145 ]
+			'vendorIds' : [ 134701236, 1998812735, 1410745145, 242140165 ]
 		},
 
 		'vehicles': {
@@ -109,21 +110,12 @@ def getMissingItems(config, group):
 		vendor, definitions = getVendorForCharacter(config, config.characters[0], vendorId, True)
 
 		if not vendor:
-			print 'Failed to get vendor content. Aborting.'
-			return
+			print 'Unable to fetch vendor inventory. %s not available?' % (getVendorName(vendorId))
+			continue
 
 		saleItems = []
 		for cat in vendor['saleItemCategories']:
 			saleItems.extend(cat['saleItems'])
-
-		# Xur doesn't always have items
-		if not saleItems and vendorId == 2796397637:
-			print 'Found no Xur items for sale. Weekday?'
-			continue
-
-		if not saleItems:
-			print 'Found no items for sale. API issue?'
-			continue
 
 		# Look for each item in our collection
 		for saleItem in saleItems:
@@ -166,14 +158,19 @@ def getVendorForCharacter(config, characterId, vendorId, definitions = False):
 		print 'Failed to fetch vendor inventory. Server error.'
 		return None, None
 
-	if json.loads(response.text)['ErrorStatus'] != 'Success':
+	response = json.loads(response.text)
+
+	# Not all vendors are available at all times
+	if response['ErrorStatus'] == 'DestinyVendorNotFound':
+		return None, None
+
+	if response['ErrorStatus'] != 'Success':
 		print 'Failed to fetch vendor inventory. Request error?'
 		return None, None
 
-	response = json.loads(response.text)['Response']
-	data = response['data']
+	data = response['Response']['data']
 
 	if definitions:
-		return response['data'], response['definitions']
+		return data, response['Response']['definitions']
 
-	return response['data'], None
+	return data, None
