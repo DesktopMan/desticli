@@ -61,8 +61,16 @@ def getMissingItems(config, group):
 		}
 	}
 
-	# Plasma Drive, "Emerald Coil", Heavy Ammo Synthesis, Three of Coins, Mote of Light
-	ignoredItems = [ 1880070441, 1880070440, 211861343, 417308266, 937555249 ]
+	ignoredItems = [
+		1880070441, # Plasma Drive
+		1880070443, # Void Drive
+		1880070442, # Stealth Drive
+		1880070440, # "Emerald Coil"
+		2633085824, # Glass Needles
+		211861343,  # Heavy Ammo Synthesis
+		417308266,  # Three of Coins
+		937555249   # Mote of Light
+	]
 
 	typeNames = groupMapping[group]['typeNames']
 	kioskIds  = groupMapping[group]['kioskIds']
