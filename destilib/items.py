@@ -33,6 +33,7 @@ def getItemCategories():
 	ic['moldering_shards'] = [ 3842845801 ]
 	ic['passage_coins'] = [ 605475555 ]
 	ic['three_of_coins'] = [ 417308266 ]
+	ic['glass_needles'] = [ 2633085824 ]
 
 	return ic
 
@@ -83,7 +84,8 @@ def getItemName(itemId):
 		452597397  : 'Exotic Shard',
 		3842845801 : 'Moldering Shard',
 		605475555  : 'Passage Coin',
-		417308266  : 'Three of Coins'
+		417308266  : 'Three of Coins',
+		2633085824 : 'Glass Needles'
 	}
 
 	if itemId in items:

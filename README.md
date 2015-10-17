@@ -88,5 +88,6 @@ Items are organized into groups. The following groups are supported by *normaliz
 * moldering_shards
 * passage_coins
 * three_of_coins
+* glass_needles
 
 You can supply multiple groups if you want to. The alias _all_ will select all groups.
