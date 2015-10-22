@@ -40,7 +40,7 @@ def update(config, args):
 
 	print 'Fetching item list from Destiny Exotics...'
 
-	response = session.get(URL + '/api/items/?fields=itemHash&sections=true&user=%s' % (userId))
+	response = session.get(URL + '/api/items/?fields=itemHash,visible&sections=true&user=%s' % (userId))
 
 	if response.status_code != 200:
 		print 'Failed fetching item list from Destiny Exotics. Server error?'
@@ -52,13 +52,13 @@ def update(config, args):
 		print 'Failed fetching item list from Destiny Exotics. Bad request?'
 		return
 
-	items = {}
+	exoticsItems = {}
 
 	# Initialize item list from Destiny Exotics
 	for section in response['sections']:
 		for group in section['groups']:
 			for item in group['items']:
-				items[int(item['itemHash'])] = 0
+				exoticsItems[int(item['itemHash'])] = { 'collected': 0, 'visible': item['visible'] }
 
 	print 'Fetching kiosk and character inventories...'
 
@@ -73,10 +73,13 @@ def update(config, args):
 
 			for cat in collection['saleItemCategories']:
 				for item in cat['saleItems']:
-					if item['failureIndexes'] != []:
-						items[item['item']['itemHash']] = 0 # Not unlocked
-					else:
-						items[item['item']['itemHash']] = 1 # Unlocked
+					itemHash = item['item']['itemHash']
+
+					if itemHash != 3386109374: # Missing Exotic Blueprint
+						exoticsItems[itemHash]['collected'] = 1 # Not upgraded
+
+	# All character and vault items
+	ownedItems = []
 
 	# Then check current character inventories
 	for character in config.characters:
@@ -86,13 +89,7 @@ def update(config, args):
 			print 'Failed to get character inventory. Aborting.'
 			return
 
-		for item in inventory:
-			itemHash = item['itemHash']
-			if itemHash in items:
-				if item['isGridComplete']:
-					items[itemHash] = 2 # Fully upgraded
-				elif items[itemHash] == 0:
-					items[itemHash] = 1 # Not upgraded
+		ownedItems.extend(inventory)
 
 	# Finally check the vault
 	vault = user.getVaultInventory(config, 1)
@@ -101,20 +98,22 @@ def update(config, args):
 		print 'Failed to get vault inventory. Aborting.'
 		return
 
-	for item in vault:
+	ownedItems.extend(vault)
+
+	for item in ownedItems:
 		itemHash = item['itemHash']
-		if itemHash in items:
+		if itemHash in exoticsItems:
 			if item['isGridComplete']:
-				items[itemHash] = 2 # Fully upgraded
-			elif items[itemHash] == 0:
-				items[itemHash] = 1 # Not upgraded
+				exoticsItems[itemHash]['collected'] = 2 # Fully upgraded
+			elif exoticsItems[itemHash]['collected'] == 0:
+				exoticsItems[itemHash]['collected'] = 1 # Not upgraded
 
 	print 'Updating Destiny Exotics...'
 
 	body = {}
 	body['items'] = []
 
-	for itemHash, itemStatus in items.iteritems():
-		body['items'].append({'itemHash': str(itemHash), 'visible': True, 'collected': itemStatus})
+	for itemHash, item in exoticsItems.iteritems():
+		body['items'].append({'itemHash': str(itemHash), 'visible': item['visible'], 'collected': item['collected']})
 
 	response = session.post(URL + '/api/users/user/%s/items/' % (userId), data=json.dumps(body))
