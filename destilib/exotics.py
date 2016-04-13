@@ -75,7 +75,7 @@ def update(config, args):
 				for item in cat['saleItems']:
 					itemHash = item['item']['itemHash']
 
-					if itemHash != 3386109374: # Missing Exotic Blueprint
+					if itemHash != 3386109374 and itemHash in exoticsItems: # Missing Exotic Blueprint
 						exoticsItems[itemHash]['collected'] = 1 # Not upgraded
 
 	# All character and vault items
