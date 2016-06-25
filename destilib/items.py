@@ -25,6 +25,12 @@ def getItemCategories():
 	ic['glimmer_boosters'] = [ 3783295803, 1043138475, 1772853454, 3446457162 ]
 	ic['glimmer_consumables'] = [ 269776572, 3632619276, 2904517731, 1932910919 ]
 
+	# Vanguard, Crucible, House of Judgment
+	ic['rep_boosters'] = [ 2220921114, 1500229041, 1603376703 ];
+
+	# Yellow, White, Red, Green, Orange, Magenta, Blue
+	ic['chroma'] = [ 3705287264, 3705287265, 3705287266, 894761024, 894761026, 894761027, 3705287267 ];
+
 	ic['weapon_parts'] = [ 1898539128 ]
 	ic['armor_materials'] = [ 1542293174 ]
 	ic['strange_coins'] = [ 1738186005 ]
@@ -77,6 +83,19 @@ def getItemName(itemId):
 		3632619276 : 'Silken Codex',
 		2904517731 : 'Axiomatic Beads',
 		1932910919 : 'Network Keys',
+
+		2220921114 : 'Vanguard Reputation Booster',
+		1500229041 : 'Crucible Reputation Booster',
+		1603376703 : 'House of Judgment Reputation Booster',
+
+		3705287264 : 'Yellow Chroma',
+		3705287265 : 'White Chroma',
+		3705287266 : 'Red Chroma',
+		894761024  : 'Green Chroma',
+		894761026  : 'Orange Chroma',
+		894761027  : 'Magenta Chroma',
+		3705287267 : 'Blue Chroma',
+
 
 		1898539128 : 'Weapon Parts',
 		1542293174 : 'Armor Materials',

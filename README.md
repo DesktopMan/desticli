@@ -89,5 +89,7 @@ Items are organized into groups. The following groups are supported by *normaliz
 * passage_coins
 * three_of_coins
 * glass_needles
+* rep_boosters
+* chroma
 
 You can supply multiple groups if you want to. The alias _all_ will select all groups.
