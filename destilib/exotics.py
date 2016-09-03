@@ -24,7 +24,7 @@ def update(config, args):
 	body['username'] = username
 	body['password'] = password
 
-	response = session.post(URL + '/login', data=body)
+	response = session.post(URL + '/login', data=body, verify=False)
 
 	if response.status_code != 200:
 		print 'Failed logging in to Destiny Exotics. Server error?'
