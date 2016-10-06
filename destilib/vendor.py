@@ -128,6 +128,11 @@ def getMissingItems(config, group):
 		# Look for each item in our collection
 		for saleItem in saleItems:
 			itemHash = saleItem['item']['itemHash']
+
+			# Skip classified items
+			if definitions['items'][str(itemHash)]['itemName'] == 'Classified':
+				continue
+
 			typeName = definitions['items'][str(itemHash)]['itemTypeName']
 
 			if typeNames and not typeName in typeNames:
