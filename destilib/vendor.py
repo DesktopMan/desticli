@@ -153,6 +153,7 @@ def getMissingItems(config, group):
 				foundMissingItems.append({
 					'itemHash': itemHash,
 					'itemName': itemName,
+					'itemType': typeName,
 					'rarity': definitions['items'][str(itemHash)]['tierTypeName'],
 					'vendor': getVendorName(vendorId)
 				})
@@ -161,7 +162,7 @@ def getMissingItems(config, group):
 	print 'Found %i missing %s for sale%s' % (fmc, group if fmc != 1 else group[:-1], ':' if fmc else '.')
 
 	for item in foundMissingItems:
-		print '* %s (%s, %s)' % (item['itemName'], item['rarity'], item['vendor'])
+		print '* %s (%s %s, %s)' % (item['itemName'], item['rarity'], item['itemType'], item['vendor'])
 
 def getVendorForCharacter(config, characterId, vendorId, definitions = False):
 	URL = 'https://www.bungie.net/Platform/Destiny/2/MyAccount/Character/%s/Vendor/%i/?definitions=%s' % (characterId, vendorId, 'true' if definitions else 'false')
