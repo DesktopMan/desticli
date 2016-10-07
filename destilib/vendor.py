@@ -61,15 +61,13 @@ def getMissingItems(config, group):
 		}
 	}
 
-	ignoredItems = [
-		1880070441, # Plasma Drive
-		1880070443, # Void Drive
-		1880070442, # Stealth Drive
-		1880070440, # "Emerald Coil"
-		2633085824, # Glass Needles
-		211861343,  # Heavy Ammo Synthesis
-		417308266,  # Three of Coins
-		937555249   # Mote of Light
+	ignoredTypes = [
+		'Consumable',
+		'Currency',
+		'Material',
+		'Silver Dust',
+		'Vehicle Upgrade',
+		'Weapon Ornament'
 	]
 
 	typeNames = groupMapping[group]['typeNames']
@@ -128,13 +126,19 @@ def getMissingItems(config, group):
 		# Look for each item in our collection
 		for saleItem in saleItems:
 			itemHash = saleItem['item']['itemHash']
+			itemName = definitions['items'][str(itemHash)]['itemName']
 
 			# Skip classified items
-			if definitions['items'][str(itemHash)]['itemName'] == 'Classified':
+			if itemName == 'Classified':
 				continue
 
 			typeName = definitions['items'][str(itemHash)]['itemTypeName']
 
+			# Skip globally irrelevant item types
+			if typeName in ignoredTypes:
+				continue
+
+			# Skip item types not relevant for this collection (if any)
 			if typeNames and not typeName in typeNames:
 				continue
 
@@ -145,9 +149,7 @@ def getMissingItems(config, group):
 					owned = True
 					break
 
-			itemName = definitions['items'][str(itemHash)]['itemName']
-
-			if not owned and not itemName.endswith('Engram') and not itemHash in ignoredItems:
+			if not owned and not itemName.endswith('Engram'):
 				foundMissingItems.append({
 					'itemHash': itemHash,
 					'itemName': itemName,
