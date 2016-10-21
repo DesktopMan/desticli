@@ -44,6 +44,7 @@ def login(username, password, api_key):
 		PSN_OAUTH_URI,
 		data={"j_username": username, "j_password": password, "params": params64},
 		cookies={"JSESSIONID": jsessionid0},
+		params={"redirect_uri": BUNGIE_SIGNIN_URI},
 		allow_redirects=False
 	)
 	if "authentication_error" in post.headers["location"]:
@@ -53,31 +54,17 @@ def login(username, password, api_key):
 	jsessionid1 = post.cookies["JSESSIONID"]
 	logger.debug("JSESSIONID: %s", jsessionid1)
 
-	# Follow the redirect from the previous request passing in the new
-	# JSESSIONID cookie. This gets us the x-np-grant-code to complete
-	# the sign-in with Bungie.
-	get_grant_code = requests.get(
-		post.headers["location"],
-		allow_redirects=False,
-		cookies={"JSESSIONID": jsessionid1}
-	)
-	grant_code = get_grant_code.headers["x-np-grant-code"]
-	logger.debug("x-np-grant-code: %s", grant_code)
-
-	# Finish our sign-in with Bungie using the grant code.
-	auth_cookies = requests.get(BUNGIE_SIGNIN_URI,
-								params={"code": grant_code})
-
-	# Create requests Session.
 	session = requests.Session()
 
-	# Save the cookies indicating we've signed in to our session
+	# Follow the redirect from the previous request passing in the new
+	# JSESSIONID cookie. This gets us the Bungie cookies.
+	session.get(
+		post.headers["location"],
+		allow_redirects=True,
+		cookies={"JSESSIONID": jsessionid1}
+	)
+
+	# Add the API key to the current session
 	session.headers["X-API-Key"] = api_key
-	session.headers["x-csrf"] = auth_cookies.cookies["bungled"]
-	session.cookies.update({
-		"bungleatk": auth_cookies.cookies["bungleatk"],
-		"bungled": auth_cookies.cookies["bungled"],
-		"bungledid": auth_cookies.cookies["bungledid"]
-	})
 
 	return session
