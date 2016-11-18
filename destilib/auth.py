@@ -64,7 +64,8 @@ def login(username, password, api_key):
 		cookies={"JSESSIONID": jsessionid1}
 	)
 
-	# Add the API key to the current session
+	# Add the API key and x-csrf token to the current session
 	session.headers["X-API-Key"] = api_key
+	session.headers["x-csrf"] = session.cookies["bungled"]
 
 	return session
